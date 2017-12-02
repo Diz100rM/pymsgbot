@@ -1,22 +1,22 @@
-# pymsgbot
+# PyMsgBOT
 Python quote bot for Telegram
 
 Всем привет. Этот бот создан для сохранения цитат одного или нескольких человек в телеграмм (чем-то похоже на bash.im)
 Для того чтобы установить и запустить бота вам нужно выполнить несколько шагов.
 
-1)git clone https://github.com/Diz100rM/pymsgbot.git
+*1)git clone https://github.com/Diz100rM/pymsgbot.git
 
-2)cd pymsgbot
+*2)cd pymsgbot
 
-3)pip install -r requirements.txt
+*3)pip install -r requirements.txt
 
-4)python main.py
+*4)python main.py
 
-Для корректно работы вам нужно создать 2 базы данных этими SQL коммандами:
+Для корректной работы вам нужно создать 2 базы данных этими SQL коммандами:
 
-1) CREATE DATABASE pymsgbot;  (если вы планируете создать отдельную базу данных)
+*1) CREATE DATABASE pymsgbot;  (если вы планируете создать отдельную базу данных)
 
-2) CREATE TABLE quotes(
+*2) CREATE TABLE quotes(
     id INT NOT NULL AUTO_INCREMENT,
     date VARCHAR(20),
     owner VARCHAR(200),
@@ -25,7 +25,7 @@ Python quote bot for Telegram
     PRIMARY KEY(id)
 );
 
-3) CREATE TABLE votes (
+*3) CREATE TABLE votes (
     quote_id int,
     user_Id int,
     rate tinyint,
