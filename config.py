@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-token = "<BOT TOKEN>"
+token = "357994337:AAFOO5Id-A8pKQHVMmfu2vRXxmB_DiEtftY"
 
-db_name = "<NAME>"
-db_user = "<USER>"
-db_pass = "<PASSWORD>"
+db_name = "pybot"
+db_user = "pybot"
+db_pass = "5211"
 
 VOTING_INTERVAL = 2
-# Interval for pushing VOTE BUTTON
