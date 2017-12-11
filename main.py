@@ -43,6 +43,22 @@ class UpdateMessageTime:
 updateTime = UpdateMessageTime()
 
 
+def first_start():
+    try:
+        cursor.execute("DESCRIBE quotes")
+    except pymysql.err.ProgrammingError:
+        cursor.execute("CREATE TABLE quotes(id INT NOT NULL AUTO_INCREMENT,"
+                       "date VARCHAR(20), owner VARCHAR(200),"
+                       "quote VARCHAR(2000), media_id VARCHAR(1000),"
+                       "PRIMARY KEY(id));")
+    try:
+        cursor.execute("DESCRIBE votes")
+    except pymysql.err.ProgrammingError:
+        cursor.execute("CREATE TABLE votes(quote_id int, user_Id int,"
+                       "rate tinyint,UNIQUE KEY votes_quote_user_unique"
+                       "(quote_id, user_id));")
+
+
 def forward_saving_timer(chat_id=None):
     if timers['check']:
         timers['check'].cancel()
@@ -399,4 +415,5 @@ def callback_buttons(call):
                 print("Error while get Media from quote")
 
 if __name__ == "__main__":
+    first_start()
     bot.polling(none_stop=True, timeout=30)
