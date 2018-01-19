@@ -33,13 +33,13 @@ MDPARSE = "HTML"
 
 timers = {'check': None}
 
-
 class UpdateMessageTime:
-    def __init__(self, lastmessage=0, forward_saving_time=0, chat_id=None):
+    def __init__(self, lastmessage=0, forward_saving_time=0, chat_id=None, media_send=False):
         self.lastmessage = lastmessage
         self.forward_saving_time = forward_saving_time
         self.chat_id = chat_id
         self.data = {'date': None, 'owner': None, 'quote': [], 'media_id': []}
+        self.media_send = media_send
 updateTime = UpdateMessageTime()
 
 
@@ -287,6 +287,7 @@ def show_quote(message, quote_id=None, updated=None, updatemsgid=None):
                             message.chat.id, response,
                             reply_markup=keyboard, parse_mode=MDPARSE
                         )
+                        updateTime.media_send = False
 
 
 @bot.message_handler(commands=['delete'])
@@ -383,34 +384,41 @@ def callback_buttons(call):
         elif call.data.startswith("media"):
             quote_id = re.search('\d+', call.data).group()
             try:
-                cursor.execute(
-                    "SELECT media_id FROM quotes WHERE id=%s",
-                    quote_id
-                )
-                media = cursor.fetchall()[0][0].split(';')
-                if media == ['']:
-                    bot.send_message(
-                        call.message.chat.id,
-                        str("Медиа файлы из цитаты №"
-                            + quote_id + ", отсутствуют!")
-                    )
+                if updateTime.media_send == True:
+                    pass
                 else:
-                    bot.send_message(
-                        call.message.chat.id,
-                        str("Медиа файлы из цитаты №" + quote_id + "!")
-                    )
-                for i in media:
-                    items = i.split('\t')
-                    if items[0] == "stick":
-                        bot.send_sticker(call.message.chat.id, items[1])
-                    elif items[0] == "doc":
-                        bot.send_document(call.message.chat.id, items[1])
-                    elif items[0] == "photo":
-                        bot.send_photo(call.message.chat.id, items[1])
-                    elif items[0] == "audio":
-                        bot.send_audio(call.message.chat.id, items[1])
-                    elif items[0] == "voice":
-                        bot.send_voice(call.message.chat.id, items[1])
+                    cursor.execute(
+                        "SELECT media_id FROM quotes WHERE id=%s",
+                        quote_id
+                        )
+                    media = cursor.fetchall()[0][0].split(';')
+                    if media == ['']:
+                        if updateTime.media_send == False:
+                            bot.send_message(
+                            call.message.chat.id,
+                            str("Медиа файлы из цитаты №"
+                                + quote_id + ", отсутствуют!")
+                                )
+                            updateTime.media_send = True
+                    else:
+                        if updateTime.media_send == False:
+                            bot.send_message(
+                            call.message.chat.id,
+                            str("Медиа файлы из цитаты №" + quote_id + "!")
+                            )
+                            for i in media:
+                                items = i.split('\t')
+                                if items[0] == "stick":
+                                    bot.send_sticker(call.message.chat.id, items[1])
+                                elif items[0] == "doc":
+                                    bot.send_document(call.message.chat.id, items[1])
+                                elif items[0] == "photo":
+                                    bot.send_photo(call.message.chat.id, items[1])
+                                elif items[0] == "audio":
+                                    bot.send_audio(call.message.chat.id, items[1])
+                                elif items[0] == "voice":
+                                    bot.send_voice(call.message.chat.id, items[1])
+                            updateTime.media_send = True
             except pymysql.err.IntegrityError:
                 print("Error while get Media from quote")
 
