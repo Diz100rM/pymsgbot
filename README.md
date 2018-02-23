@@ -16,32 +16,6 @@ Python quote bot for Telegram
  4)python main.py
 
 
-
-
-Для корректной работы вам нужно создать 2 базы данных этими SQL коммандами:
-
-
-
- 1) CREATE DATABASE pymsgbot;  (если вы планируете создать отдельную базу данных)
-
- 2) CREATE TABLE quotes(
-    id INT NOT NULL AUTO_INCREMENT,
-    date VARCHAR(20),
-    owner VARCHAR(200),
-    quote VARCHAR(2000),
-    media_id VARCHAR(1000),
-    PRIMARY KEY(id)
-);
-
- 3) CREATE TABLE votes (
-    quote_id int,
-    user_Id int,
-    rate tinyint,
-    UNIQUE KEY votes_quote_user_unique (quote_id, user_id)
- );
-
-
-
 После этого укажите данные БД в файл config.py
 
 Также укажите токен бота который вы можете получить у @BotFather
